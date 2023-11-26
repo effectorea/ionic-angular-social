@@ -30,3 +30,11 @@
   --box-shadow: none;
   --background: none;
 }
+
+.item-divider {
+  border-bottom: 2px solid var(--ion-color-light-tint);
+}
+
+ion-button {
+  text-transform: initial;
+}
