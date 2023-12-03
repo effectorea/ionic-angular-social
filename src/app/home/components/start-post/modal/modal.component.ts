@@ -15,10 +15,6 @@ export class ModalComponent  implements OnInit {
 
   ngOnInit() {}
 
-  closeHandler() {
-    // this.xClose.emit()
-  }
-
   onPost() {
     if (!this.form.valid) return
     const body = this.form.value['body']
