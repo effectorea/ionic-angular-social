@@ -12,11 +12,11 @@ export class AuthGuard implements CanLoad {
   }
   canLoad(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.authService.isUserLoggedIn.pipe(
-      take(1),
       switchMap((isUserLoggedIn: boolean) => {
         if (isUserLoggedIn) {
           return of(isUserLoggedIn)
         }
+        return this.authService.isTokenInStorage()
       }),
       tap((isUserLoggedIn: boolean) => {
         if (!isUserLoggedIn) {

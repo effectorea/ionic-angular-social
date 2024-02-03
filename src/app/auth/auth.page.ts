@@ -16,8 +16,7 @@ export class AuthPage implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onSubmit(): any {
     const { email, password } = this.form.value

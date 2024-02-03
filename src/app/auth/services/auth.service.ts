@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {NewUser} from "../models/newUser.model";
-import {BehaviorSubject, catchError, Observable, of, switchMap, take, tap} from "rxjs";
+import {BehaviorSubject, catchError, from, map, Observable, of, switchMap, take, tap} from "rxjs";
 import {Role, User} from "../models/user.model";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -34,7 +34,8 @@ export class AuthService {
   get userRole(): Observable<Role> {
     return this.user$.asObservable().pipe(
       switchMap((user: User) => {
-        return of(user.role)
+        if (user) return of(user.role)
+        if (!user) return of(null)
       })
     )
   }
@@ -59,5 +60,28 @@ export class AuthService {
         this.user$.next(decodedToken.user)
       })
     )
+  }
+
+  isTokenInStorage(): Observable<boolean> {
+    return from(Preferences.get({key: 'token'})).pipe(
+      map((data: { value: string }) => {
+        if (!data || !data.value) return null;
+
+        const decodedToken: UserResponse = jwtDecode(data.value)
+        console.log('Decoded token', decodedToken);
+        const jwtExpirationInMsSinceUnixEpoch = decodedToken.exp * 1000;
+        const isExpired = new Date() > new Date(jwtExpirationInMsSinceUnixEpoch)
+        if (isExpired) return null;
+        if (decodedToken.user) {
+          this.user$.next(decodedToken.user)
+          return true
+        }
+      })
+    )
+  }
+
+  logout(): void {
+    this.user$.next(null);
+    Preferences.remove({key: 'token'}).then(() => this.router.navigateByUrl('/auth'))
   }
 }
