@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {PostService} from "../../services/post.service";
 import {IonInfiniteScroll} from "@ionic/angular";
 import {Post} from "../../models/Post";
@@ -8,7 +8,8 @@ import {Post} from "../../models/Post";
   templateUrl: './all-posts.component.html',
   styleUrls: ['./all-posts.component.scss'],
 })
-export class AllPostsComponent  implements OnInit {
+export class AllPostsComponent  implements OnInit, OnChanges {
+  @Input() postBody?: string;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   queryParams: string;
   allPosts: Post[] = [];
@@ -19,6 +20,14 @@ export class AllPostsComponent  implements OnInit {
 
   ngOnInit() {
     this.loadPosts(false)
+  }
+
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    const postBody = simpleChanges['postBody'].currentValue
+    if (!postBody) return
+    this.postService.createPost(postBody).subscribe((post: Post) => {
+      this.allPosts.unshift(post)
+    })
   }
 
   loadPosts(isInitialLoad: boolean, event?: any) {

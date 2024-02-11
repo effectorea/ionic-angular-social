@@ -7,6 +7,13 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
+  body: string = ''
+
   constructor() {}
+
+  handleCreatingPost(body: string) {
+    console.log('EVENT IN HOMEPAGE', body);
+    this.body = body
+  }
 
 }

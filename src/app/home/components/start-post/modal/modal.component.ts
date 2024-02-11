@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {NgForm} from "@angular/forms";
+import {PostService} from "../../../services/post.service";
 
 @Component({
   selector: 'app-modal',
@@ -20,11 +21,9 @@ export class ModalComponent  implements OnInit {
     const body = this.form.value['body']
     this.modalController.dismiss({
       post: {
-        body,
-        createdAt: new Date()
+        body
       }
     }, 'post')
-
   }
 
   onDismiss() {
