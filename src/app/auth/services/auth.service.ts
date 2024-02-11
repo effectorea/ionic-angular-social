@@ -40,6 +40,15 @@ export class AuthService {
     )
   }
 
+  get userId(): Observable<number> {
+    return this.user$.asObservable().pipe(
+      switchMap((user: User) => {
+        if (user) return of(user.id)
+        if (!user) return of(null)
+      })
+    )
+  }
+
   constructor(private http: HttpClient, private router: Router) { }
 
   register(newUser: NewUser): Observable<User> {

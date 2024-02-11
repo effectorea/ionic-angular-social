@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalController} from "@ionic/angular";
-import {NgForm} from "@angular/forms";
-import {PostService} from "../../../services/post.service";
+import {NgForm, NgModel} from "@angular/forms";
+import {Post} from "../../../models/Post";
 
 @Component({
   selector: 'app-modal',
@@ -9,12 +9,15 @@ import {PostService} from "../../../services/post.service";
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent  implements OnInit {
+  @Input() post?: Post;
 
   @ViewChild('form') form: NgForm
 
   constructor(public modalController: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('Post in modal', this.post);
+  }
 
   onPost() {
     if (!this.form.valid) return

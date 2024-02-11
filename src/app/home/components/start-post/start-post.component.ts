@@ -24,7 +24,7 @@ export class StartPostComponent  implements OnInit {
       cssClass: 'my-second-custom'
     } as ModalOptions)
     await modal.present()
-    const {role, data} = await modal.onDidDismiss()
+    const {data} = await modal.onDidDismiss()
     if (!data) return
     this.create.emit(data.post.body)
   }

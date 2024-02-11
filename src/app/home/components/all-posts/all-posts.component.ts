@@ -1,7 +1,10 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {PostService} from "../../services/post.service";
-import {IonInfiniteScroll} from "@ionic/angular";
+import {IonInfiniteScroll, ModalController, ModalOptions} from "@ionic/angular";
 import {Post} from "../../models/Post";
+import {BehaviorSubject, take} from "rxjs";
+import {AuthService} from "../../../auth/services/auth.service";
+import {ModalComponent} from "../start-post/modal/modal.component";
 
 @Component({
   selector: 'app-all-posts',
@@ -15,11 +18,16 @@ export class AllPostsComponent  implements OnInit, OnChanges {
   allPosts: Post[] = [];
   numberOfPosts = 5;
   skipPosts = 0;
+  userId$ = new BehaviorSubject<number>(null)
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService, private authService: AuthService, public modalController: ModalController) { }
 
   ngOnInit() {
     this.loadPosts(false)
+    this.authService.userId.pipe(take(1)).subscribe((userId: number) => {
+      if (!userId) this.userId$.next(null)
+      this.userId$.next(userId)
+    })
   }
 
   ngOnChanges(simpleChanges: SimpleChanges) {
@@ -47,6 +55,43 @@ export class AllPostsComponent  implements OnInit, OnChanges {
 
   loadData(event?: any) {
     this.loadPosts(true, event)
+  }
+
+  async presentEditModal(post: Post) {
+    console.log(post);
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+      cssClass: 'my-second-custom',
+      componentProps: {
+        post: post
+      }
+    } as ModalOptions)
+    await modal.present()
+    const {data} = await modal.onDidDismiss()
+    console.log('This is the edited data >>>', data);
+    if (!data) return
+    const changedBody = data.post.body.trim()
+    this.postService.updatePost(post.id, changedBody).subscribe((editRes) => {
+      console.log('Result of editing', editRes);
+      if (!editRes) return
+      // this.allPosts = this.allPosts.map((p: Post) => {
+      //   if (p.id === post.id) {
+      //     p.body = changedBody
+      //   }
+      //   return p
+      // })
+      const postIndex = this.allPosts.findIndex((p: Post) => p.id === post.id)
+      this.allPosts[postIndex].body = changedBody
+    })
+  }
+
+  deletePost(postId: number) {
+    this.postService.deletePost(postId).subscribe(deletedPost => {
+      console.log(deletedPost);
+      if (!deletedPost) return
+      this.allPosts = this.allPosts.filter((post: Post) => post.id !== postId)
+    })
+
   }
 
 }
