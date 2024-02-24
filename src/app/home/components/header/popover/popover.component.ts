@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from "../../../../auth/services/auth.service";
 import {PopoverController} from "@ionic/angular";
 
@@ -8,6 +8,8 @@ import {PopoverController} from "@ionic/angular";
   styleUrls: ['./popover.component.scss'],
 })
 export class PopoverComponent  implements OnInit {
+  @Input() userFullImagePath: string;
+  @Input() fullName: string;
 
   constructor(private auth: AuthService, public popoverController: PopoverController) { }
 

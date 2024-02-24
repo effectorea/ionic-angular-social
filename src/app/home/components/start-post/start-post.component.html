@@ -1,8 +1,7 @@
 <ion-card>
   <ion-card-header>
     <ion-avatar>
-      <ion-img src="../../../../assets/photo_2022-06-05_18-51-32.jpg">
-
+      <ion-img *ngIf="userFullImagePath" [src]="userFullImagePath">
       </ion-img>
     </ion-avatar>
     <ion-button color="medium" shape="round" fill="outline" (click)="openModal()">

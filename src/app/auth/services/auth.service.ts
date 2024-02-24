@@ -73,7 +73,9 @@ export class AuthService {
   get userFullImagePath(): Observable<string> {
     return this.user$.asObservable().pipe(
       switchMap((user: User) => {
+        console.log('This is a user', user);
         const doesAuthorHaveImage = !!user?.imagePath
+        console.log('Does author have image', doesAuthorHaveImage);
         let fullImagePath = this.getDefaultFullImagePath()
         if (doesAuthorHaveImage) {
           fullImagePath = this.getFullImagePath(user.imagePath)
@@ -113,8 +115,12 @@ export class AuthService {
   }
 
   uploadUserImage(formData: FormData): Observable<{ modifiedFileName: string }> {
-    return this.http.post<{ modifiedFileName: string }>(`${environment.baseApiUrl}/user/upload`, formData).pipe(
-      take(1)
+    return this.http.post<{ modifiedFileName: any }>(`${environment.baseApiUrl}/user/upload`, formData).pipe(
+      tap(({modifiedFileName}) => {
+        let user = this.user$.value
+        user.imagePath = modifiedFileName
+        this.user$.next(user)
+      })
     )
   }
 
