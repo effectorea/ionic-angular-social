@@ -1,0 +1,24 @@
+<app-header></app-header>
+<ion-content>
+  <ion-card>
+    <div class="backdrop" [style.background]="bannerColorService.bannerColors.colorTwo">
+      <div class="bg-one" [style.background]="bannerColorService.bannerColors.colorOne"></div>
+      <div class="half-ellipse" [style.background]="bannerColorService.bannerColors.colorOne"></div>
+      <div class="bg-two" [style.background]="bannerColorService.bannerColors.colorTwo"></div>
+      <div class="bg-three" [style.background]="bannerColorService.bannerColors.colorThree"></div>
+    </div>
+
+    <ion-card-header class="ion-text-center">
+      <ion-avatar class="ion-margin-auto" style="cursor: pointer">
+<!--        <ion-img *ngIf="userFullImagePath" [src]="userFullImagePath"></ion-img>-->
+      </ion-avatar>
+<!--      <ion-card-title class="ion-margin-top">{{fullName}}</ion-card-title>-->
+      <ion-card-title class="ion-margin-top">Johnny Joshua</ion-card-title>
+      <ion-card-subtitle>Software Engineer</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

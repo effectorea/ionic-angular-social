@@ -13,6 +13,7 @@ import {StartPostComponent} from "./components/start-post/start-post.component";
 import {ModalComponent} from "./components/start-post/modal/modal.component";
 import {AllPostsComponent} from "./components/all-posts/all-posts.component";
 import {TabsComponent} from "./components/tabs/tabs.component";
+import {ConnectionProfileComponent} from "./components/connection-profile/connection-profile.component";
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import {TabsComponent} from "./components/tabs/tabs.component";
     IonicModule,
     HomePageRoutingModule,
   ],
-  declarations: [HomePage, HeaderComponent, PopoverComponent, AdvertisingComponent, ProfileSummaryComponent, StartPostComponent, ModalComponent, AllPostsComponent, TabsComponent]
+  declarations: [HomePage, HeaderComponent, PopoverComponent, AdvertisingComponent, ProfileSummaryComponent, StartPostComponent, ModalComponent, AllPostsComponent, TabsComponent, ConnectionProfileComponent]
 })
 export class HomePageModule {
 }

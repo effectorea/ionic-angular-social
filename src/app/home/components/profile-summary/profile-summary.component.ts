@@ -5,15 +5,10 @@ import {Role} from "../../../auth/models/user.model";
 import {FormControl, FormGroup} from "@angular/forms";
 import {fromBuffer} from "file-type/core";
 import {FileTypeResult} from "file-type/core";
+import {BannerColors, BannerColorService} from "../../services/banner-color.service";
 
 type validFileExtension = 'png' | 'jpg' | 'jpeg'
 type validMimeType = 'image/png' | 'image/jpg' | 'image/jpeg'
-
-type BannerColors = {
-  colorOne: string
-  colorTwo: string
-  colorThree: string
-}
 
 @Component({
   selector: 'app-profile-summary',
@@ -23,12 +18,6 @@ type BannerColors = {
 export class ProfileSummaryComponent  implements OnInit, OnDestroy {
 
   form: FormGroup;
-
-  bannerColors: BannerColors = {
-    colorOne: '#a0b4b7',
-    colorTwo: '#dbe7e9',
-    colorThree: '#bfd3d6',
-  }
 
   obs$: Subscription;
 
@@ -40,7 +29,7 @@ export class ProfileSummaryComponent  implements OnInit, OnDestroy {
   fullName$ = new BehaviorSubject<string>(null)
   fullName: string = ''
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, public bannerColorService: BannerColorService) { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -48,7 +37,7 @@ export class ProfileSummaryComponent  implements OnInit, OnDestroy {
     })
     this.obs$ = this.authService.userRole.subscribe((role: Role) => {
       console.log('ROLE IS HERE >>>', role);
-      this.bannerColors = this.getBannerColors(role)
+      this.bannerColorService.bannerColors = this.bannerColorService.getBannerColors(role)
     })
 
     this.authService.userFullName.pipe(take(1)).subscribe((userFullName: string) => {
@@ -58,25 +47,6 @@ export class ProfileSummaryComponent  implements OnInit, OnDestroy {
     this.userImagePathSubscription = this.authService.userFullImagePath.subscribe((fullImagePath: string) => {
       this.userFullImagePath = fullImagePath
     })
-  }
-
-  private getBannerColors(role: Role): BannerColors {
-    switch (role) {
-      case "admin":
-        return {
-          colorOne: '#daa520',
-          colorTwo: '#f0e68c',
-          colorThree: '#fafad2',
-        }
-      case "premium":
-        return {
-          colorOne: '#bc8f8f',
-          colorTwo: '#c09999',
-          colorThree: '#ddadaf',
-        }
-      default:
-        return this.bannerColors
-    }
   }
 
   ngOnDestroy() {
