@@ -5,12 +5,12 @@
         <ion-grid>
           <ion-row class="ion-align-items-center ion-justify-content-center">
             <ion-col size="auto" class="ion-padding">
-              <ion-avatar style="cursor: pointer" [routerLink]="['/', 'home', $any(post).author.id]">
+              <ion-avatar style="cursor: pointer" [routerLink]="(userId$ | async) !== post['author'].id ? ['/', 'home', $any(post).author.id] : ['/', 'home']">
                 <ion-img [src]="$any(post).fullImagePath"></ion-img>
               </ion-avatar>
             </ion-col>
             <ion-col>
-              <div class="full-name" [routerLink]="['/', 'home', $any(post).author.id]">{{$any(post).author.firstName}} {{$any(post).author.lastName}}</div>
+              <div class="full-name" [routerLink]="(userId$ | async) !== post['author'].id ? ['/', 'home', $any(post).author.id] : ['/', 'home']">{{$any(post).author.firstName}} {{$any(post).author.lastName}}</div>
               <div class="role">Software Engineer</div>
               <div class="meta">
                 1d<ion-icon name="ellipse"></ion-icon> edited
