@@ -12,14 +12,15 @@ import {environment} from "../../../../environments/environment";
   templateUrl: './connection-profile.component.html',
   styleUrls: ['./connection-profile.component.scss'],
 })
-export class ConnectionProfileComponent  implements OnInit, OnDestroy {
+export class ConnectionProfileComponent implements OnInit, OnDestroy {
 
   user: User;
   friendRequestStatus: FriendRequest_Status;
   friendRequestStatusSubscription$: Subscription;
   userSubscription$: Subscription;
 
-  constructor(public bannerColorService: BannerColorService, private connectionProfileService: ConnectionProfileService, private route: ActivatedRoute) { }
+  constructor(public bannerColorService: BannerColorService, private connectionProfileService: ConnectionProfileService, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.friendRequestStatusSubscription$ = this.getFriendRequestStatus().pipe(
@@ -41,6 +42,15 @@ export class ConnectionProfileComponent  implements OnInit, OnDestroy {
         return this.connectionProfileService.getConnectionUser(userId)
       })
     )
+  }
+
+  addUser(): Subscription {
+    this.friendRequestStatus = 'pending'
+    return this.getUserIdFromUrl().pipe(
+      switchMap((userId: number) => {
+        return this.connectionProfileService.addConnectionUser(userId)
+      })
+    ).pipe(take(1)).subscribe()
   }
 
   getFriendRequestStatus(): Observable<FriendRequestStatus> {
