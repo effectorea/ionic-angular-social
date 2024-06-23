@@ -19,13 +19,14 @@
       <ng-container *ngIf="['not-sent', 'pending', 'waiting-for-current-user-response'].includes(friendRequestStatus)">
         <ion-button [disabled]="['pending', 'waiting-for-current-user-response'].includes(friendRequestStatus)"
                     (click)="addUser()"
-        shape="round">{{friendRequestStatus === 'waiting-for-current-user-response' ? 'Accept request' : 'Connect'}}</ion-button>
-        <ion-button fill="outline">
+        shape="round">{{friendRequestStatus === 'waiting-for-current-user-response' ? 'Accept request' : 'Connect'}}
+        </ion-button>
+      </ng-container>
+        <ion-button fill="outline" [disabled]="friendRequestStatus === 'declined'">
           <ion-icon slot="start" name="lock-closed"></ion-icon>
           Message
         </ion-button>
         <ion-button fill="outline" shape="round">More</ion-button>
-      </ng-container>
 
     </ion-card-content>
   </ion-card>

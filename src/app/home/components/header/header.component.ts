@@ -29,7 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     })
 
     this.friendRequestsSubscription = this.connectionProfileService.getFriendRequests().subscribe((friendRequests: FriendRequestInterface[]) => {
-      console.log('FR', friendRequests);
       this.connectionProfileService.friendRequests =
         friendRequests.filter((friendRequest: FriendRequestInterface) => friendRequest.status === 'pending')
     })
