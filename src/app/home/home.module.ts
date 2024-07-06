@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {IonicModule} from '@ionic/angular';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HomePage} from './home.page';
 
 import {HomePageRoutingModule} from './home-routing.module';
@@ -18,6 +18,7 @@ import {UserProfileComponent} from "./components/user-profile/user-profile.compo
 import {
   FriendRequestsPopoverComponent
 } from "./components/header/friend-requests-popover/friend-requests-popover.component";
+import {ChatComponent} from "./components/chat/chat.component";
 
 
 @NgModule({
@@ -26,8 +27,23 @@ import {
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [HomePage, HeaderComponent, PopoverComponent, AdvertisingComponent, ProfileSummaryComponent, StartPostComponent, ModalComponent, AllPostsComponent, TabsComponent, ConnectionProfileComponent, UserProfileComponent, FriendRequestsPopoverComponent]
+  declarations: [
+    HomePage,
+    HeaderComponent,
+    PopoverComponent,
+    AdvertisingComponent,
+    ProfileSummaryComponent,
+    StartPostComponent,
+    ModalComponent,
+    AllPostsComponent,
+    TabsComponent,
+    ConnectionProfileComponent,
+    UserProfileComponent,
+    FriendRequestsPopoverComponent,
+    ChatComponent
+  ]
 })
 export class HomePageModule {
 }
