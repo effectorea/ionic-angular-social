@@ -58,7 +58,6 @@ export class AllPostsComponent  implements OnInit, OnChanges, OnDestroy {
     }
     this.queryParams = `?take=${this.numberOfPosts}&skip=${this.skipPosts}`
     this.postService.getSelectedPosts(this.queryParams).subscribe((res: Post[]) => {
-      console.log('Loaded posts >>>', res);
       res.map((el) => {
         const doesAuthorHaveImage = !!el.author.imagePath
         let fullImagePath = this.authService.getDefaultFullImagePath()

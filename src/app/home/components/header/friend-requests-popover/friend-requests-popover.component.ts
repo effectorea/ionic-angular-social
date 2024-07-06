@@ -43,5 +43,4 @@ export class FriendRequestsPopoverComponent implements OnInit {
       take(1)
     ).subscribe()
   }
-
 }

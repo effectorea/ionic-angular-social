@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Post} from "../models/Post";
 import {environment} from "../../../environments/environment";
-import {take, tap} from "rxjs";
+import {catchError, take, tap} from "rxjs";
 import {AuthService} from "../../auth/services/auth.service";
+import {ErrorHandlingService} from "../../core/error-handling.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private errorHandlingService: ErrorHandlingService) {
     this.authService.getUserImageName().pipe(
       take(1),
       tap(({imageName}) => {
@@ -25,7 +26,14 @@ export class PostService {
   }
 
   getSelectedPosts(params: string) {
-    return this.http.get<Post[]>(`${environment.baseApiUrl}/feed${params}`)
+    return this.http.get<Post[]>(`${environment.baseApiUrl}/feed${params}`).pipe(
+      tap((posts: Post[]) => {
+        if (posts.length === 0) throw new Error('No posts to retrieve')
+      }),
+      catchError(
+        this.errorHandlingService.handleError<Post[]>('getSelectedPosts', [])
+      )
+    )
   }
 
   createPost(body: string) {
